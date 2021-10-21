@@ -34,7 +34,7 @@ void ProcessImage::drive_robot(float lin_x, float ang_z) {
 
 void ProcessImage::process_image_callback(const sensor_msgs::Image img) {
   int white_pixel = 255;
-  float chase_velocity = 0.2f;
+  float chase_velocity = 0.5f;
 
   for (int i = 0; i < img.height * img.step; i++) {
     if (img.data[i] == white_pixel) {

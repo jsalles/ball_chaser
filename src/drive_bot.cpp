@@ -24,7 +24,7 @@ DriveBot::DriveBot(ros::NodeHandle *n) {
 
 bool DriveBot::handle_drive_request(ball_chaser::DriveToTarget::Request &req,
                                     ball_chaser::DriveToTarget::Response &res) {
-  ROS_INFO("Received message to move to linear_x: %.2f, angular_z: %.2f",
+  ROS_INFO("DrvieToTargetRequest received: linear_x: %.2f, angular_z: %.2f",
            req.linear_x, req.angular_z);
 
   geometry_msgs::Twist motor_command;

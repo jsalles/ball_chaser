@@ -10,6 +10,7 @@ private:
 
   void process_image_callback(const sensor_msgs::Image img);
   void drive_robot(float lin_x, float ang_z);
+  bool is_white_pixel(const sensor_msgs::Image &img, int pos);
 
 public:
   ProcessImage(ros::NodeHandle *n);
@@ -32,12 +33,17 @@ void ProcessImage::drive_robot(float lin_x, float ang_z) {
   client.call(req);
 }
 
-void ProcessImage::process_image_callback(const sensor_msgs::Image img) {
+bool ProcessImage::is_white_pixel(const sensor_msgs::Image &img, int pos) {
   int white_pixel = 255;
+  return img.data[pos] == white_pixel && img.data[pos + 1] == white_pixel &&
+         img.data[pos + 2] == white_pixel;
+}
+
+void ProcessImage::process_image_callback(const sensor_msgs::Image img) {
   float chase_velocity = 0.5f;
 
-  for (int i = 0; i < img.height * img.step; i++) {
-    if (img.data[i] == white_pixel) {
+  for (int i = 0; i < img.height * img.step; i += 3) {
+    if (is_white_pixel(img, i)) {
       is_chasing = true;
       int current_col = i % img.step;
       ROS_INFO("Ball found at %d column", current_col);
